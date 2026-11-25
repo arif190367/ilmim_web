@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaza Namazı ve Oruç Hesaplama | İlmim</title>
+    <meta name="description" content="Doğum yılınıza ve ergenlik yaşınıza göre kaza namazı ve kaza orucu borcunuzu saniyeler içinde hesaplayın. İlmim ile ibadet borçlarınızı kolayca takip edin.">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .calc-wrapper {
+            max-width: 720px;
+            margin: 40px auto;
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .calc-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .calc-header h1 {
+            color: var(--primary-dark);
+            font-size: 1.9rem;
+            margin-bottom: 8px;
+        }
+        .calc-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        .form-group input, .form-group select {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--bg);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+        }
+        .btn-calc {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-calc:hover {
+            background: var(--primary-dark);
+        }
+        .result-box {
+            display: none;
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 2px dashed var(--border);
+        }
+        .result-box h2 {
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .res-card {
+            background: #eef6f1;
+            padding: 16px 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(15, 81, 50, 0.15);
+        }
+        .res-card span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .res-card strong {
+            font-size: 1.35rem;
+            color: var(--primary-dark);
+        }
+        .summary-note {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .app-cta {
+            background: var(--primary);
+            color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .app-cta h3 {
+            margin-bottom: 6px;
+            font-size: 1.15rem;
+        }
+        .app-cta p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 14px;
+        }
+        .app-cta .btn {
+            background: #fff;
+            color: var(--primary);
+            display: inline-block;
+            padding: 10px 22px;
+        }
+        .seo-content {
+            max-width: 720px;
+            margin: 40px auto;
+            color: var(--text);
+        }
+        .seo-content h2 {
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            margin: 24px 0 10px;
+        }
+        .seo-content p {
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+        @media (max-width: 600px) {
+            .form-grid, .result-grid { grid-template-columns: 1fr; }
+            .calc-wrapper { padding: 20px; margin: 20px auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">İlmim</a>
+            <nav class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="kaza-hesaplama.html" style="color: var(--primary); font-weight: 700;">Kaza Hesaplama</a>
+                <a href="namaz-vakitleri.html">Namaz Vakitleri</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="calc-wrapper">
+            <div class="calc-header">
+                <h1>Kaza Namazı ve Oruç Hesaplama</h1>
+                <p>Geçmiş dönem ibadet borçlarınızı kolayca hesaplayın ve planlı şekilde ödemeye başlayın.</p>
+            </div>
+
+            <form id="kazaForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="cinsiyet">Cinsiyet</label>
+                        <select id="cinsiyet" onchange="toggleOzelGun()">
+                            <option value="erkek">Erkek</option>
+                            <option value="kadin">Kadın</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="yas">Şu Anki Yaşınız</label>
+                        <input type="number" id="yas" min="12" max="100" placeholder="Örn: 30" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bulug">Ergenlik (Büluğ) Yaşınız</label>
+                        <input type="number" id="bulug" min="9" max="18" value="12" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kilinanYil">Düzenli Kıldığınız Yıl Sayısı</label>
+                        <input type="number" id="kilinanYil" min="0" max="90" value="0" required>
+                    </div>
+
+                    <div class="form-group full" id="ozelGunGroup" style="display: none;">
+                        <label for="ozelGun">Aylık Ortalama Özel Gün Sayısı (Namazdan muaf günler düşülür)</label>
+                        <input type="number" id="ozelGun" min="3" max="10" value="6">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="orucYil">Oruç Tutamadığınız Toplam Ramazan Sayısı (İsteğe Bağlı)</label>
+                        <input type="number" id="orucYil" min="0" max="80" value="0">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-calc">Borçlarımı Hesapla</button>
+            </form>
+
+            <div class="result-box" id="resultBox">
+                <h2>Tahmini Kaza Borcunuz</h2>
+                
+                <div class="result-grid">
+                    <div class="res-card"><span>Sabah</span><strong id="resSabah">0</strong></div>
+                    <div class="res-card"><span>Öğle</span><strong id="resOgle">0</strong></div>
+                    <div class="res-card"><span>İkindi</span><strong id="resIkindi">0</strong></div>
+                    <div class="res-card"><span>Akşam</span><strong id="resAksam">0</strong></div>
+                    <div class="res-card"><span>Yatsı</span><strong id="resYatsi">0</strong></div>
+                    <div class="res-card"><span>Vitir</span><strong id="resVitir">0</strong></div>
+                </div>
+
+                <div class="summary-note" id="summaryNote"></div>
+
+                <div class="app-cta">
+                    <h3>Bu Borçları Unutmadan Takip Edin</h3>
+                    <p>Hesapladığınız kaza namazı ve oruç borçlarını tek dokunuşla düşmek için İlmim uygulamasını ücretsiz indirin.</p>
+                    <a href="#" class="btn">Google Play'den İndir</a>
+                </div>
+            </div>
+        </div>
+
+        <article class="seo-content">
+            <h2>Kaza Namazı Nasıl Hesaplanır?</h2>
+            <p>Kaza namazı borcu hesaplanırken kişinin ergenlik (büluğ) çağına girdiği yaştan itibaren namaz kılmadığı toplam yıl sayısı dikkate alınır. Her gün için 5 vakit farz namaz (Sabah, Öğle, İkindi, Akşam, Yatsı) ve Hanefi mezhebine göre vacip olan Vitir namazı hesaplamaya dahil edilir.</p>
+            <p>Kadınlar için hayız (özel hal) günleri namaz yükümlülüğünden muaf olduğu için, toplam gün sayısından aylık ortalama özel gün sayısı düşülerek daha isabetli bir sonuç elde edilir.</p>
+
+            <h2>Kaza Namazına Nasıl Niyet Edilir?</h2>
+            <p>Birden fazla kaza namazı borcu olan kişi, kılacağı vakte göre örneğin: <em>"Niyet ettim Allah rızası için vaktine yetişip de kılamadığım ilk (veya son) öğle namazının kazasını kılmaya"</em> şeklinde
